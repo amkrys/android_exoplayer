@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_folders"
+            android:icon="@drawable/ic_round_folder_open_24"
+            android:title="@string/folders" />
+        <item
+            android:id="@+id/nav_videos"
+            android:icon="@drawable/ic_round_movie_24"
+            android:title="@string/videos" />
+        <item
+            android:id="@+id/nav_music"
+            android:icon="@drawable/ic_round_music_note_24"
+            android:title="@string/music" />
+    </group>
+
+</menu>
