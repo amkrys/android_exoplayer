@@ -26,6 +26,7 @@ import com.krys.exoplayer.base.BaseFragment;
 import com.krys.exoplayer.model.ModelVideo;
 import com.krys.exoplayer.player.OfflinePlayer;
 import com.krys.exoplayer.utils.CommonUtils;
+import com.krys.exoplayer.utils.ConstantStrings;
 
 import java.util.ArrayList;
 
@@ -100,7 +101,9 @@ public class VideosFragment extends BaseFragment {
             @Override
             public void onVideoClicked(int position) {
                 Intent intent = new Intent(getActivity(), OfflinePlayer.class);
-                intent.putExtra("videoId", String.valueOf(adapterVideoList.getItemData(position).getId()));
+                intent.putExtra(ConstantStrings.VIDEO_ID, String.valueOf(adapterVideoList.getItemData(position).getId()));
+                intent.putExtra(ConstantStrings.VIDEO_HEIGHT, adapterVideoList.getItemData(position).getHeight());
+                intent.putExtra(ConstantStrings.VIDEO_WIDTH, adapterVideoList.getItemData(position).getWidth());
                 startActivity(intent);
             }
         });

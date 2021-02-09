@@ -39,8 +39,8 @@ public class VideosViewModel extends ViewModel {
             int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION);
 
             while (cursor.moveToNext()) {
-                long id = cursor.getLong(idColumn);
                 String title = cursor.getString(titleColumn);
+                long id = cursor.getLong(idColumn);
                 int duration = cursor.getInt(durationColumn);
 
                 Uri data = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);

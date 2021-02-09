@@ -1,9 +1,12 @@
 package com.krys.exoplayer.player;
 
 import android.content.ContentUris;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,13 +17,22 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.exoplayer2.video.VideoListener;
 import com.krys.exoplayer.R;
+import com.krys.exoplayer.base.BaseActivity;
+import com.krys.exoplayer.utils.ConstantStrings;
 
-public class OfflinePlayer extends AppCompatActivity {
+public class OfflinePlayer extends BaseActivity {
 
-    long videoId;
     private PlayerView playerView;
     private SimpleExoPlayer player;
+
+    private boolean orientationChanged = false;
+    private int lastOrientation = 0;
+
+    private long videoId;
+    private int height;
+    private int width;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +45,17 @@ public class OfflinePlayer extends AppCompatActivity {
 
     private void getIntentParams() {
         if (getIntent().getExtras() != null){
-            if (getIntent().getExtras().containsKey("videoId")){
-                String id = getIntent().getStringExtra("videoId");
+            if (getIntent().getExtras().containsKey(ConstantStrings.VIDEO_ID)){
+                String id = getIntent().getStringExtra(ConstantStrings.VIDEO_ID);
                 videoId = Long.parseLong(id);
+            }
+
+            if (getIntent().getExtras().containsKey(ConstantStrings.VIDEO_HEIGHT)){
+                height = getIntent().getIntExtra(ConstantStrings.VIDEO_HEIGHT, 0);
+            }
+
+            if (getIntent().getExtras().containsKey(ConstantStrings.VIDEO_WIDTH)){
+                width = getIntent().getIntExtra(ConstantStrings.VIDEO_WIDTH, 0);
             }
         }
     }
@@ -55,8 +75,14 @@ public class OfflinePlayer extends AppCompatActivity {
 
         Uri videoUri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoId);
         MediaSource mediaSource = buildMediaSource(videoUri);
+        player.addVideoListener(new VideoListener() {
+            @Override
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                setRequestedOrientation(width > height ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                player.setPlayWhenReady(true);
+            }
+        });
         player.prepare(mediaSource);
-        player.setPlayWhenReady(true);
     }
 
     private MediaSource buildMediaSource(Uri uri) {
@@ -94,4 +120,24 @@ public class OfflinePlayer extends AppCompatActivity {
         }
         super.onStop();
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        int orientation = newConfig.orientation;
+        if(orientation != lastOrientation){
+            orientationChanged  = true;
+            lastOrientation = orientation ;
+        }
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideSystemUI();
+        }
+    }
+
 }

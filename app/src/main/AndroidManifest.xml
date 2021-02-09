@@ -22,14 +22,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".player.OfflinePlayer"/>
+        <activity
+            android:name=".player.OfflinePlayer"
+            android:configChanges="orientation"
+            android:theme="@style/NoActionBar"/>
 
-        <activity android:name=".player.OnlinePlayer" />
+        <activity
+            android:name=".player.OnlinePlayer"
+            android:configChanges="orientation"
+            android:theme="@style/NoActionBar"/>
 
         <activity
             android:name=".activities.DashboardActivity"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/Theme.YouTubeExoplayer.NoActionBar"/>
+            android:theme="@style/NoActionBar"/>
 
     </application>
 

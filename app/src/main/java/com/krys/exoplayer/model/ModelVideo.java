@@ -7,6 +7,7 @@ public class ModelVideo {
     long id;
     Uri data;
     String title, duration;
+    int height, width;
 
     public ModelVideo(long id, Uri data, String title, String duration) {
         this.id = id;
@@ -45,5 +46,21 @@ public class ModelVideo {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }
