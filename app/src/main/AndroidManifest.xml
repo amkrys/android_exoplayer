@@ -24,12 +24,12 @@
 
         <activity
             android:name=".player.OfflinePlayer"
-            android:configChanges="orientation"
+            android:configChanges="orientation|uiMode"
             android:theme="@style/NoActionBar"/>
 
         <activity
             android:name=".player.OnlinePlayer"
-            android:configChanges="orientation"
+            android:configChanges="screenSize|smallestScreenSize|layoutDirection|screenLayout|orientation"
             android:theme="@style/NoActionBar"/>
 
         <activity

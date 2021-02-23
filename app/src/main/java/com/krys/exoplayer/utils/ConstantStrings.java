@@ -12,5 +12,6 @@ public class ConstantStrings {
     public static String VIDEO_ID = "videoId";
     public static String VIDEO_HEIGHT = "videoHeight";
     public static String VIDEO_WIDTH = "videoWidth";
+    public static String VIDEO_DURATION = "videoDuration";
 
 }

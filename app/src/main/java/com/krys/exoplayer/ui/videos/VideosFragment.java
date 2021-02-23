@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -27,6 +28,7 @@ import com.krys.exoplayer.model.ModelVideo;
 import com.krys.exoplayer.player.OfflinePlayer;
 import com.krys.exoplayer.utils.CommonUtils;
 import com.krys.exoplayer.utils.ConstantStrings;
+import com.krys.exoplayer.utils.PrefUtils;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,7 @@ public class VideosFragment extends BaseFragment {
     private VideosViewModel videosViewModel;
     private AdapterVideoList adapterVideoList;
     private RecyclerView recyclerView;
+    private FloatingActionButton actionButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         videosViewModel = new ViewModelProvider(this).get(VideosViewModel.class);
@@ -48,6 +51,19 @@ public class VideosFragment extends BaseFragment {
         findViewById(view);
         init();
         checkPermissions();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        actionButton = getActivity().findViewById(R.id.fab);
+        actionButton.setOnClickListener(v -> {
+            long value = 0;
+            Intent intent = new Intent(getActivity(), OfflinePlayer.class);
+            intent.putExtra(ConstantStrings.VIDEO_ID, String.valueOf(PrefUtils.getPref(getActivity(), ConstantStrings.VIDEO_ID, value)));
+            intent.putExtra(ConstantStrings.VIDEO_DURATION, String.valueOf(PrefUtils.getPref(getActivity(), ConstantStrings.VIDEO_DURATION, value)));
+            startActivity(intent);
+        });
     }
 
     private void findViewById(View view) {
@@ -102,8 +118,7 @@ public class VideosFragment extends BaseFragment {
             public void onVideoClicked(int position) {
                 Intent intent = new Intent(getActivity(), OfflinePlayer.class);
                 intent.putExtra(ConstantStrings.VIDEO_ID, String.valueOf(adapterVideoList.getItemData(position).getId()));
-                intent.putExtra(ConstantStrings.VIDEO_HEIGHT, adapterVideoList.getItemData(position).getHeight());
-                intent.putExtra(ConstantStrings.VIDEO_WIDTH, adapterVideoList.getItemData(position).getWidth());
+                intent.putExtra(ConstantStrings.VIDEO_DURATION, "0");
                 startActivity(intent);
             }
         });
